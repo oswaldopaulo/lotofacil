@@ -68,11 +68,6 @@ def analyze_and_generate():
     
     top_24_numbers = [num for num, count in most_common[:24]]
     
-    # Ordenar os números para facilitar a visualização ou manter a ordem de frequência?
-    # Vamos misturar um pouco para criar grupos equilibrados ou sequenciais?
-    # O pedido foi "Dividir os numeros em grupos de 3".
-    # Vamos criar 8 grupos de 3 números.
-    
     groups = []
     # Estratégia simples: agrupar sequencialmente da lista de frequência
     for i in range(0, 24, 3):
@@ -80,22 +75,36 @@ def analyze_and_generate():
         groups.append(group)
         
     print("\n--- Grupos Gerados (baseados nos 24 mais frequentes) ---")
+    group_map = {}
     for i, g in enumerate(groups):
         print(f"Grupo {i+1}: {g}")
+        group_map[g] = i + 1
 
-    # 3. Criar sequência de 21 apostas com 5 desses grupos
+    # Solicitar quantidade de apostas ao usuário
+    while True:
+        try:
+            num_bets_str = input("\nQuantas apostas deseja gerar? ")
+            num_bets = int(num_bets_str)
+            if num_bets > 0:
+                break
+            print("Por favor, insira um número maior que zero.")
+        except ValueError:
+            print("Entrada inválida. Por favor, insira um número inteiro.")
+
+    # 3. Criar sequência de apostas com 5 desses grupos
     # Combinações de 8 grupos tomados 5 a 5
     # Total de combinações possíveis: 8C5 = 56
     
     combs = list(combinations(groups, 5))
     random.shuffle(combs) # Embaralhar para variar as apostas geradas
     
-    generated_bets = []
+    generated_bets_data = []
+    generated_bets_set = set()
     
     print("\n--- Gerando Apostas ---")
     count = 0
     for comb in combs:
-        if count >= 21:
+        if count >= num_bets:
             break
             
         # Formar a aposta
@@ -109,15 +118,27 @@ def analyze_and_generate():
         if bet_tuple in past_draws:
             continue
             
-        # Verificar se já adicionamos esta aposta (embora combinations garanta unicidade de grupos, a ordem não importa)
-        if bet_tuple not in generated_bets:
-            generated_bets.append(bet_tuple)
+        # Verificar se já adicionamos esta aposta
+        if bet_tuple not in generated_bets_set:
+            generated_bets_set.add(bet_tuple)
+            
+            # Identificar quais grupos foram usados
+            used_groups_ids = sorted([group_map[g] for g in comb])
+            
+            generated_bets_data.append({
+                'bet': bet_tuple,
+                'groups': used_groups_ids
+            })
             count += 1
 
     # Exibir as apostas
-    print(f"Foram geradas {len(generated_bets)} apostas únicas (que nunca saíram antes):")
-    for i, bet in enumerate(generated_bets, 1):
-        print(f"Aposta {i:02d}: {bet}")
+    print(f"Foram geradas {len(generated_bets_data)} apostas únicas (que nunca saíram antes):")
+    for i, data in enumerate(generated_bets_data, 1):
+        print(f"Aposta {i:02d}: {data['bet']}")
+        # print(f"          Grupos: {data['groups']}")
+        
+    if len(generated_bets_data) < num_bets:
+        print(f"\nAviso: Só foi possível gerar {len(generated_bets_data)} apostas únicas com a estratégia atual (máximo de combinações possíveis é {len(combs)}).")
 
 if __name__ == '__main__':
     analyze_and_generate()

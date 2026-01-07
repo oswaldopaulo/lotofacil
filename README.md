@@ -8,12 +8,14 @@ Este projeto é uma ferramenta de análise e geração de apostas para a Lotofá
 *   **Agrupamento Inteligente:** Seleciona os 24 números mais frequentes e os divide em 8 grupos de 3 números.
 *   **Geração de Apostas:** Cria combinações de 5 grupos (15 números) para formar apostas.
 *   **Filtro de Exclusividade:** Garante que as apostas geradas nunca tenham sido sorteadas anteriormente.
-*   **Saída:** Gera uma lista de 21 sugestões de apostas otimizadas.
+*   **Quantidade Personalizável:** O usuário define quantas apostas deseja gerar.
+*   **Detalhamento:** Exibe quais grupos de números foram utilizados para compor cada aposta.
 
 ## Pré-requisitos
 
 *   Python 3.x instalado.
 *   Arquivo `Lotofácil.xlsx` na raiz do projeto com as colunas `Bola1` até `Bola15`.
+    *   **Nota:** Este arquivo não está incluído no repositório por conter dados voláteis. Você deve obter uma versão atualizada (ex: no site da Caixa) e salvá-la na pasta raiz do projeto.
 
 ## Instalação
 
@@ -34,7 +36,8 @@ pip install -r requirements.txt
 python main.py
 ```
 
-3.  O programa exibirá no console as estatísticas dos números e a lista de 21 apostas geradas.
+3.  O programa solicitará a quantidade de apostas desejada.
+4.  Serão exibidas as estatísticas, os grupos formados e as apostas geradas com seus respectivos grupos.
 
 ## Créditos
 

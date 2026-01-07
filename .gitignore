@@ -1,0 +1,15 @@
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# IDEs
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+
+# Dados
+Lotofácil.xlsx
