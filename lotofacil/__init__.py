@@ -1,0 +1,2 @@
+"""Lotofacil analytics package."""
+
